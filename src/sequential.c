@@ -23,7 +23,7 @@ void reallocSeq() {
 }
 
 void reallocBig(int fileLines) {
-	fileLines+=size;
+	fileLines += size;
 
 	seq = (RG *) realloc(seq, fileLines * sizeof(RG));
 }
@@ -362,4 +362,134 @@ int getPosSeqIns() {
 		scanf("%d", &pos);
 	} while (!(pos >= 0 && pos <= size));
 	return pos;
+}
+
+void inserctionSort() {
+	startBenchmark();
+	BM bm = { 0 };
+
+	int i, j;
+	RG temp;
+
+	for (i = 1; i < size; i++) {
+		j = i - 1;
+		while (strcasecmp(seq[j + 1].nome, seq[j].nome) < 0) {
+			temp = seq[j];
+			seq[j] = seq[j + 1];
+			seq[j + 1] = temp;
+			if (j > 0) {
+				j--;
+			} else {
+				break;
+			}
+		}
+	}
+	endBenchmark(bm);
+}
+
+void selectionSort() {
+	startBenchmark();
+	BM bm = { 0 };
+
+	int i, j, menorIdx;
+	RG temp;
+
+	for (i = 0; i < size - 1; i++) {
+		menorIdx = i;
+		for (j = i + 1; j < size; j++) {
+			if (strcasecmp(seq[j].nome, seq[menorIdx].nome) < 0) {
+				menorIdx = j;
+			}
+		}
+		temp = seq[menorIdx];
+		seq[menorIdx] = seq[i];
+		seq[i] = temp;
+	}
+	endBenchmark(bm);
+}
+
+void bubbleSort() {
+	startBenchmark();
+	BM bm = { 0 };
+
+	int i, j;
+	RG aux;
+
+	for (i = size - 1; i >= 0; i--) {
+		for (j = 0; j < i; j++) {
+			if (strcasecmp(seq[j].nome, seq[j + 1].nome) > 0) {
+//			if (seq[j] > seq[j + 1]) {
+				aux = seq[j];
+				seq[j] = seq[j + 1];
+				seq[j + 1] = aux;
+			}
+		}
+	}
+	endBenchmark(bm);
+}
+
+void shellSort() {
+	startBenchmark();
+	BM bm = { 0 };
+
+	int i, j, k;
+	RG tmp;
+
+	for (i = size / 2; i > 0; i = i / 2) {
+		for (j = i; j < size; j++) {
+			for (k = j - i; k >= 0; k = k - i) {
+//				if (seq[k + i] >= seq[k])
+				if (strcasecmp(seq[k + i].nome, seq[k].nome) >= 0)
+					break;
+				else {
+					tmp = seq[k];
+					seq[k] = seq[k + i];
+					seq[k + i] = tmp;
+				}
+			}
+		}
+	}
+
+	endBenchmark(bm);
+}
+
+void callQuickSort() {
+		startBenchmark();
+		BM bm = { 0 };
+	quickSort(0, size - 1);
+		endBenchmark(bm);
+}
+
+void quickSort(int left, int right) {
+
+
+	int i = left, j = right;
+	RG tmp;
+	RG pivot = seq[(left + right) / 2];
+
+	/* partition */
+	while (i <= j) {
+//            while (seq[i] < pivot)
+		while (strcasecmp(seq[i].nome, pivot.nome) < 0)
+			i++;
+		while (strcasecmp(seq[j].nome, pivot.nome) > 0)
+			j--;
+		if (i <= j) {
+			tmp = seq[i];
+			seq[i] = seq[j];
+			seq[j] = tmp;
+			i++;
+			j--;
+		}
+	};
+
+	/* recursion */
+	if (left < j){
+		quickSort(left, j);
+	}
+	if (i < right){
+		quickSort(i, right);
+	}
+
+
 }

@@ -13,6 +13,8 @@
 #include "benchmark.h"
 #include "sequential.h"
 
+Node **ref;
+
 int loadLinkedList(Header *head, char fileName[]) {
 
 	system("cls");
@@ -42,11 +44,11 @@ int loadLinkedList(Header *head, char fileName[]) {
 	endBenchmark(bm);
 
 	fclose(fp);
-
 	return 1;
 }
 
 void writeLinkedList(Header *head) {
+
 	if (head->nodeCount > 0) {
 
 		FILE *f = fopen("linkedList.txt", "w");
@@ -63,11 +65,15 @@ void writeLinkedList(Header *head) {
 
 		startBenchmark();
 
-		aux = head->head;
-		for (i = 0; i < head->nodeCount; i++) {
+//		aux = head->head;
+//		for (i = 0; i < head->nodeCount; i++) {
+//
+//			fprintf(f, "%s,%d \n", aux->rg.nome, aux->rg.nr);
+//			aux = aux->next;
+//		}
 
-			fprintf(f, "%s,%d \n", aux->rg.nome, aux->rg.nr);
-			aux = aux->next;
+		for (i = 0; i < head->nodeCount; i++) {
+			fprintf(f, "%s,%d \n", ref[i]->rg.nome, ref[i]->rg.nr);
 		}
 
 		endBenchmark();
@@ -77,6 +83,7 @@ void writeLinkedList(Header *head) {
 	} else {
 		printf("\nLista vazia.\n");
 	}
+
 }
 
 void splitRGl(Header *head, char string[100]) {
@@ -494,5 +501,96 @@ int getPosDel(Header *head) {
 	}
 
 	return pos;
+}
+
+void startRef(int size) {
+	free(ref);
+	ref = (Node**) malloc(size * sizeof(Node*));
+}
+
+//void reallocRef(int size) {
+//	seq = (RG *) realloc(seq, size * sizeof(RG));
+//}
+
+void reference(Header *head) {
+	printf("Ref...");
+	startBenchmark();
+	BM bm = { 0 };
+	int i;
+	Node *aux;
+	aux = head->head;
+
+	startRef(head->nodeCount);
+
+	for (i = 0; i < head->nodeCount; i++) {
+		ref[i] = aux;
+
+		aux = aux->next;
+	}
+	endBenchmark(bm);
+}
+
+void linkedShellSort(Header *head) {
+
+	startBenchmark();
+	BM bm = { 0 };
+
+	int i, j, k;
+	Node *tmp;
+
+	for (i = head->nodeCount / 2; i > 0; i = i / 2) {
+		for (j = i; j < head->nodeCount; j++) {
+			for (k = j - i; k >= 0; k = k - i) {
+//				if (seq[k + i] >= seq[k])
+				if (strcasecmp(ref[k + i]->rg.nome, ref[k]->rg.nome) >= 0)
+					break;
+				else {
+					tmp = ref[k];
+					ref[k] = ref[k + i];
+					ref[k + i] = tmp;
+				}
+			}
+		}
+	}
+
+	endBenchmark(bm);
+}
+
+void linkedCallQuickSort(Header *head) {
+	startBenchmark();
+	BM bm = { 0 };
+	linkedQuickSort(0, head->nodeCount - 1);
+	endBenchmark(bm);
+}
+
+void linkedQuickSort(int left, int right) {
+
+	int i = left, j = right;
+	Node *tmp;
+	Node *pivot = ref[(left + right) / 2];
+
+	/* partition */
+	while (i <= j) {
+//            while (seq[i] < pivot)
+		while (strcasecmp(ref[i]->rg.nome, pivot->rg.nome) < 0)
+			i++;
+		while (strcasecmp(ref[j]->rg.nome, pivot->rg.nome) > 0)
+			j--;
+		if (i <= j) {
+			tmp = ref[i];
+			ref[i] = ref[j];
+			ref[j] = tmp;
+			i++;
+			j--;
+		}
+	};
+
+	/* recursion */
+	if (left < j) {
+		linkedQuickSort(left, j);
+	}
+	if (i < right) {
+		linkedQuickSort(i, right);
+	}
 }
 

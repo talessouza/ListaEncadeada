@@ -54,7 +54,13 @@ int main(void) {
 		printf("8 - Remover elemento na posicao N.\n");
 		printf("9 - Carregar lista do arquivo.\n");
 		printf("10 - Salvar lista atual em arquivo.\n");
-		printf("11 - Sair.\n");
+		printf("11 - Inserction.\n");
+		printf("12 - Selection.\n");
+		printf("13 - Bubble.\n");
+		printf("14 - Shell.\n");
+		printf("15 - Quick.\n");
+
+		printf("20 - Sair.\n");
 
 		scanf("%d", &menu);
 
@@ -127,9 +133,24 @@ int main(void) {
 				writeSequentialList();
 			}
 			break;
+		case 11:
+			inserctionSort();
+			break;
+		case 12:
+			selectionSort();
+			break;
+		case 13:
+			bubbleSort();
+			break;
+		case 14:
+			linkedShellSort(&head);
+			break;
+		case 15:
+			linkedCallQuickSort(&head);
+			break;
 		}
 
-	} while (menu != 11);
+	} while (menu != 20);
 
 	wipeList(&head);
 
@@ -191,6 +212,7 @@ void listOptions(Header *head, int list) {
 
 	if (list == 1) {
 		loadLinkedList(head, fileName);
+		reference(head);
 	} else {
 		loadSequentialList(fileName, fileLines);
 	}

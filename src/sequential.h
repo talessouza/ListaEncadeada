@@ -8,6 +8,8 @@
 #ifndef SEQUENTIAL_H_
 #define SEQUENTIAL_H_
 
+#include "benchmark.h"
+
 //struct rg {
 //	char nome[50];
 //	int nr;
@@ -30,5 +32,12 @@ void writeSequentialList();
 void splitRG(char string[100]);
 int loadSequentialList(char fileName[], int fileLines);
 BM insertSeqAtTheEndNoRealloc(RG rg, int bench);
+
+void inserctionSort();
+void selectionSort();
+void bubbleSort();
+void shellSort();
+void callQuickSort();
+void quickSort(int left, int right);
 
 #endif /* SEQUENTIAL_H_ */

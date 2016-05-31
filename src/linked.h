@@ -37,4 +37,12 @@ BM deleteFirstNode(Header *head, int bench);
 void deleteNodeAtN(Header *head, int k);
 void writeLinkedList(Header *head);
 
+void startRef(int size);
+void reallocRef(int size);
+void reference(Header *head);
+void linkedShellSort(Header *head);
+
+void linkedCallQuickSort(Header *head);
+void linkedQuickSort(int left, int right);
+
 #endif
