@@ -70,6 +70,7 @@ int main(void) {
 		case 1:
 			if (list == 1) {
 				insertNodeAtTheEnd(&head, getValue(), 1);
+				reference(&head);
 			} else {
 				insertSeqAtTheEnd(getValue(), 1);
 			}
@@ -77,6 +78,7 @@ int main(void) {
 		case 2:
 			if (list == 1) {
 				insertNodeAtStart(&head, getValue(), 1);
+				reference(&head);
 			} else {
 				insertSeqAtStart(getValue(), 1);
 			}
@@ -84,6 +86,7 @@ int main(void) {
 		case 3:
 			if (list == 1) {
 				deleteNodeByValue(&head);
+				reference(&head);
 			} else {
 				deleteSeqByValue();
 			}
@@ -98,6 +101,7 @@ int main(void) {
 		case 5:
 			if (list == 1) {
 				insertAtN(&head, getValue(), getPosIns(&head));
+				reference(&head);
 			} else {
 				insertSeqAtN(getValue(), getPosSeqIns());
 			}
@@ -105,6 +109,7 @@ int main(void) {
 		case 6:
 			if (list == 1) {
 				deleteLastNode(&head, 1);
+				reference(&head);
 			} else {
 				deleteLastSeq(1);
 			}
@@ -112,6 +117,7 @@ int main(void) {
 		case 7:
 			if (list == 1) {
 				deleteFirstNode(&head, 1);
+				reference(&head);
 			} else {
 				deleteFirstSeq(1);
 			}
@@ -119,6 +125,7 @@ int main(void) {
 		case 8:
 			if (list == 1) {
 				deleteNodeAtN(&head, getPosDel(&head));
+				reference(&head);
 			} else {
 				deleteSeqAtN(getPosSeqDel(), 1);
 			}
@@ -134,19 +141,40 @@ int main(void) {
 			}
 			break;
 		case 11:
-			inserctionSort();
+			if (list == 1) {
+				linkedInserctionSort(&head);
+			} else {
+				inserctionSort();
+			}
 			break;
 		case 12:
-			selectionSort();
+			if (list == 1) {
+				linkedSelectionSort(&head);
+			} else {
+				selectionSort();
+			}
+			;
 			break;
 		case 13:
-			bubbleSort();
+			if (list == 1) {
+				linkedBubbleSort(&head);
+			} else {
+				bubbleSort();
+			}
 			break;
 		case 14:
-			linkedShellSort(&head);
+			if (list == 1) {
+				linkedShellSort(&head);
+			} else {
+				shellSort();
+			}
 			break;
 		case 15:
-			linkedCallQuickSort(&head);
+			if (list == 1) {
+				linkedCallQuickSort(&head);
+			} else {
+				callQuickSort();
+			}
 			break;
 		}
 

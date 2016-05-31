@@ -40,6 +40,9 @@ void writeLinkedList(Header *head);
 void startRef(int size);
 void reallocRef(int size);
 void reference(Header *head);
+void linkedInserctionSort(Header *head);
+void linkedSelectionSort(Header *head);
+void linkedBubbleSort(Header *head);
 void linkedShellSort(Header *head);
 
 void linkedCallQuickSort(Header *head);

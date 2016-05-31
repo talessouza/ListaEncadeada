@@ -397,7 +397,7 @@ void selectionSort() {
 	for (i = 0; i < size - 1; i++) {
 		menorIdx = i;
 		for (j = i + 1; j < size; j++) {
-			if (strcasecmp(seq[j].nome, seq[menorIdx].nome) < 0) {
+			if (seq[j].nr < seq[menorIdx].nr) {
 				menorIdx = j;
 			}
 		}
@@ -417,8 +417,8 @@ void bubbleSort() {
 
 	for (i = size - 1; i >= 0; i--) {
 		for (j = 0; j < i; j++) {
-			if (strcasecmp(seq[j].nome, seq[j + 1].nome) > 0) {
-//			if (seq[j] > seq[j + 1]) {
+//			if (strcasecmp(seq[j].nome, seq[j + 1].nome) > 0) {
+			if (seq[j].nr > seq[j + 1].nr) {
 				aux = seq[j];
 				seq[j] = seq[j + 1];
 				seq[j + 1] = aux;
@@ -439,7 +439,7 @@ void shellSort() {
 		for (j = i; j < size; j++) {
 			for (k = j - i; k >= 0; k = k - i) {
 //				if (seq[k + i] >= seq[k])
-				if (strcasecmp(seq[k + i].nome, seq[k].nome) >= 0)
+				if (seq[k + i].nr >= seq[k].nr)
 					break;
 				else {
 					tmp = seq[k];
@@ -470,9 +470,9 @@ void quickSort(int left, int right) {
 	/* partition */
 	while (i <= j) {
 //            while (seq[i] < pivot)
-		while (strcasecmp(seq[i].nome, pivot.nome) < 0)
+		while (seq[i].nr < pivot.nr)
 			i++;
-		while (strcasecmp(seq[j].nome, pivot.nome) > 0)
+		while (seq[j].nr > pivot.nr)
 			j--;
 		if (i <= j) {
 			tmp = seq[i];

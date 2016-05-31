@@ -1,8 +1,10 @@
-NomeRG1k.txt
+/Debug/*
+NomeRG1K.txt
 NomeRG1M.txt
 NomeRG10.txt
-NomeRG10k.txt
+NomeRG10K.txt
 NomeRG50.txt
 NomeRG100.txt
 NomeRG100M.txt
-/Debug/
+linkedList.txt
+sequentialList.txt
