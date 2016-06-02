@@ -687,4 +687,3 @@ void linkedCallMergeSort(int size) {
 	linkedMergeSort(ref,size);
 	endBenchmark(bm);
 }
-

@@ -526,6 +526,46 @@ void seqMergeSort(RG *a, int n) {
 void callMergeSort() {
 	startBenchmark();
 	BM bm = { 0 };
-	seqMergeSort(seq,size);
+	seqMergeSort(seq, size);
 	endBenchmark(bm);
+}
+
+void callBynarySearch() {
+
+	int rg=0, idx;
+
+	printf("\n Digite o numero do documento a remover.\n");
+	scanf("%d", &rg);
+
+	startBenchmark();
+	BM bm = { 0 };
+
+	idx = bynarySearch(rg, 0, size);
+
+	if (idx == -1) {
+		printf("\nO valor %d nao pode ser encontrado. \n", rg);
+	} else {
+		printf("\nO valor %d pode ser encontrado na posicao %d. \n", rg, idx);
+		printf("\nPOS: %d\n", idx);
+		printf("NOME: %s\n", seq[idx].nome);
+		printf("NR: %d\n", seq[idx].nr);
+	}
+	endBenchmark(bm);
+
+}
+
+int bynarySearch(int value, int start, int finish) {
+	if (start > finish) {
+		return -1;
+	}
+
+	int m = start + (finish - start) / 2;
+
+	if (seq[m].nr < value) {
+		return bynarySearch(value, m + 1, finish);
+	} else if(seq[m].nr > value){
+		return bynarySearch(value, start, m - 1);
+	}
+
+	return m;
 }

@@ -184,6 +184,9 @@ int main(void) {
 				callMergeSort();
 			}
 			break;
+		case 17:
+			callBynarySearch();
+			break;
 		}
 
 	} while (menu != 20);
@@ -216,6 +219,7 @@ void listOptions(Header *head, int list) {
 		switch (menu) {
 		case 1:
 			strncpy(fileName, "NomeRG10.txt", 20);
+//			strncpy(fileName, "sequentialList.txt", 20);
 			fileLines = 10;
 			break;
 		case 2:

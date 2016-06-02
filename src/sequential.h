@@ -43,4 +43,7 @@ void seqMergeSort(RG *a, int n);
 void seqMerge(RG *a, int n, int m);
 void callMergeSort();
 
+void callBynarySearch();
+int bynarySearch(int value, int start, int finish);
+
 #endif /* SEQUENTIAL_H_ */
