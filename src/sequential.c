@@ -454,14 +454,13 @@ void shellSort() {
 }
 
 void callQuickSort() {
-		startBenchmark();
-		BM bm = { 0 };
+	startBenchmark();
+	BM bm = { 0 };
 	quickSort(0, size - 1);
-		endBenchmark(bm);
+	endBenchmark(bm);
 }
 
 void quickSort(int left, int right) {
-
 
 	int i = left, j = right;
 	RG tmp;
@@ -484,12 +483,49 @@ void quickSort(int left, int right) {
 	};
 
 	/* recursion */
-	if (left < j){
+	if (left < j) {
 		quickSort(left, j);
 	}
-	if (i < right){
+	if (i < right) {
 		quickSort(i, right);
 	}
+}
 
+void seqMerge(RG *a, int n, int m) {
+	int i, j, k;
+	RG *x = malloc(n * sizeof(RG));
+	for (i = 0, j = m, k = 0; k < n; k++) {
 
+		if (j == n) {
+			x[k] = a[i++];
+		} else if (i == m) {
+			x[k] = a[j++];
+		} else if (a[j].nr < a[i].nr) {
+			x[k] = a[j++];
+		} else {
+			x[k] = a[i++];
+		}
+
+	}
+	for (i = 0; i < n; i++) {
+		a[i] = x[i];
+	}
+	free(x);
+}
+
+void seqMergeSort(RG *a, int n) {
+
+	if (n < 2)
+		return;
+	int m = n / 2;
+	seqMergeSort(a, m);
+	seqMergeSort(a + m, n - m);
+	seqMerge(a, n, m);
+}
+
+void callMergeSort() {
+	startBenchmark();
+	BM bm = { 0 };
+	seqMergeSort(seq,size);
+	endBenchmark(bm);
 }

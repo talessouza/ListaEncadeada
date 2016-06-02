@@ -39,5 +39,8 @@ void bubbleSort();
 void shellSort();
 void callQuickSort();
 void quickSort(int left, int right);
+void seqMergeSort(RG *a, int n);
+void seqMerge(RG *a, int n, int m);
+void callMergeSort();
 
 #endif /* SEQUENTIAL_H_ */

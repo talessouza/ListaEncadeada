@@ -48,4 +48,8 @@ void linkedShellSort(Header *head);
 void linkedCallQuickSort(Header *head);
 void linkedQuickSort(int left, int right);
 
+void linkedMerge(Node **a, int n, int m);
+void linkedMergeSort(Node **a, int n);
+void linkedCallMergeSort(int size);
+
 #endif

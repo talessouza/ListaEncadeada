@@ -59,6 +59,7 @@ int main(void) {
 		printf("13 - Bubble.\n");
 		printf("14 - Shell.\n");
 		printf("15 - Quick.\n");
+		printf("16 - Merge.\n");
 
 		printf("20 - Sair.\n");
 
@@ -174,6 +175,13 @@ int main(void) {
 				linkedCallQuickSort(&head);
 			} else {
 				callQuickSort();
+			}
+			break;
+		case 16:
+			if (list == 1) {
+				linkedCallMergeSort(head.nodeCount);
+			} else {
+				callMergeSort();
 			}
 			break;
 		}

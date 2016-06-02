@@ -1,0 +1,18 @@
+RG1M
+
+Quick: 0.34s
+Shell: 0.46s
+bubble: NF
+
+
+RG100M
+
+Sequencial
+Shell: 22.93s ==> 1.07s
+Quick:  2.97s ==> 0.75s
+Merge:  7.85s ==> 6.60s
+
+Encadeada
+Shell: 29.16s ==> 6.31s
+Quick:  4.45s ==> 2.18s
+Merge:  6.17s ==> 4.31s
