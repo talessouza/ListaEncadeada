@@ -46,10 +46,13 @@ void linkedBubbleSort(Header *head);
 void linkedShellSort(Header *head);
 
 void linkedCallQuickSort(Header *head);
-void linkedQuickSort(int left, int right);
+BM linkedQuickSort(int left, int right, BM bm);
 
-void linkedMerge(Node **a, int n, int m);
-void linkedMergeSort(Node **a, int n);
+BM linkedMerge(Node **a, int n, int m, BM bm);
+BM linkedMergeSort(Node **a, int n, BM bm);
 void linkedCallMergeSort(int size);
+
+void linkedCallBynarySearch(Header *head);
+int linkedBynarySearch(int value, int start, int finish, BM bm);
 
 #endif

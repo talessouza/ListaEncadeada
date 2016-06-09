@@ -38,12 +38,12 @@ void selectionSort();
 void bubbleSort();
 void shellSort();
 void callQuickSort();
-void quickSort(int left, int right);
-void seqMergeSort(RG *a, int n);
-void seqMerge(RG *a, int n, int m);
+BM quickSort(int left, int right, BM bm);
+BM seqMergeSort(RG *a, int n, BM bm);
+BM seqMerge(RG *a, int n, int m, BM bm);
 void callMergeSort();
 
 void callBynarySearch();
-int bynarySearch(int value, int start, int finish);
+int bynarySearch(int value, int start, int finish, BM bm);
 
 #endif /* SEQUENTIAL_H_ */

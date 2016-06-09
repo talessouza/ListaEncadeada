@@ -60,6 +60,8 @@ int main(void) {
 		printf("14 - Shell.\n");
 		printf("15 - Quick.\n");
 		printf("16 - Merge.\n");
+		printf("17 - Busca Binaria.\n");
+		printf("18 - Busca Seq.\n");
 
 		printf("20 - Sair.\n");
 
@@ -185,7 +187,18 @@ int main(void) {
 			}
 			break;
 		case 17:
-			callBynarySearch();
+			if (list == 1) {
+				linkedCallBynarySearch(&head);
+			} else {
+				callBynarySearch();
+			}
+			break;
+		case 18:
+			if (list == 1) {
+				searchNodeByValue(&head);
+			} else {
+				searchByValue();
+			}
 			break;
 		}
 
@@ -219,7 +232,6 @@ void listOptions(Header *head, int list) {
 		switch (menu) {
 		case 1:
 			strncpy(fileName, "NomeRG10.txt", 20);
-//			strncpy(fileName, "sequentialList.txt", 20);
 			fileLines = 10;
 			break;
 		case 2:

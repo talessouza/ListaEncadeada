@@ -373,7 +373,8 @@ void inserctionSort() {
 
 	for (i = 1; i < size; i++) {
 		j = i - 1;
-		while (strcasecmp(seq[j + 1].nome, seq[j].nome) < 0) {
+		bm.nA+=1;
+		while (seq[j + 1].nr < seq[j].nr) {
 			temp = seq[j];
 			seq[j] = seq[j + 1];
 			seq[j + 1] = temp;
@@ -382,6 +383,8 @@ void inserctionSort() {
 			} else {
 				break;
 			}
+			bm.nC+=2;
+			bm.nA+=3;
 		}
 	}
 	endBenchmark(bm);
@@ -396,14 +399,21 @@ void selectionSort() {
 
 	for (i = 0; i < size - 1; i++) {
 		menorIdx = i;
+		bm.nA+=2;
+		bm.nC+=1;
 		for (j = i + 1; j < size; j++) {
+			bm.nA+=1;
+			bm.nC+=1;
 			if (seq[j].nr < seq[menorIdx].nr) {
 				menorIdx = j;
+				bm.nA+=1;
 			}
+			bm.nC+=1;
 		}
 		temp = seq[menorIdx];
 		seq[menorIdx] = seq[i];
 		seq[i] = temp;
+		bm.nA+=3;
 	}
 	endBenchmark(bm);
 }
@@ -416,13 +426,18 @@ void bubbleSort() {
 	RG aux;
 
 	for (i = size - 1; i >= 0; i--) {
+		bm.nA+=1;
+		bm.nC+=1;
 		for (j = 0; j < i; j++) {
-//			if (strcasecmp(seq[j].nome, seq[j + 1].nome) > 0) {
+			bm.nA+=1;
+			bm.nC+=1;
 			if (seq[j].nr > seq[j + 1].nr) {
 				aux = seq[j];
 				seq[j] = seq[j + 1];
 				seq[j + 1] = aux;
+				bm.nA+=3;
 			}
+			bm.nC+=1;
 		}
 	}
 	endBenchmark(bm);
@@ -436,15 +451,21 @@ void shellSort() {
 	RG tmp;
 
 	for (i = size / 2; i > 0; i = i / 2) {
+		bm.nA+=1;
+		bm.nC+=1;
 		for (j = i; j < size; j++) {
+			bm.nA+=1;
+			bm.nC+=1;
 			for (k = j - i; k >= 0; k = k - i) {
-//				if (seq[k + i] >= seq[k])
+				bm.nA+=1;
+				bm.nC+=2;
 				if (seq[k + i].nr >= seq[k].nr)
 					break;
 				else {
 					tmp = seq[k];
 					seq[k] = seq[k + i];
 					seq[k + i] = tmp;
+					bm.nA+=3;
 				}
 			}
 		}
@@ -456,91 +477,113 @@ void shellSort() {
 void callQuickSort() {
 	startBenchmark();
 	BM bm = { 0 };
-	quickSort(0, size - 1);
+	bm = quickSort(0, size - 1, bm);
 	endBenchmark(bm);
 }
 
-void quickSort(int left, int right) {
+BM quickSort(int left, int right, BM bm) {
 
 	int i = left, j = right;
 	RG tmp;
 	RG pivot = seq[(left + right) / 2];
+	bm.nA+=1;
 
-	/* partition */
 	while (i <= j) {
-//            while (seq[i] < pivot)
-		while (seq[i].nr < pivot.nr)
+		bm.nC+=1;
+		while (seq[i].nr < pivot.nr){
+			bm.nC+=1;
 			i++;
-		while (seq[j].nr > pivot.nr)
+		}
+		while (seq[j].nr > pivot.nr){
+			bm.nC+=1;
 			j--;
+		}
 		if (i <= j) {
 			tmp = seq[i];
 			seq[i] = seq[j];
 			seq[j] = tmp;
 			i++;
 			j--;
+			bm.nA+=3;
 		}
+		bm.nC+=1;
 	};
 
-	/* recursion */
 	if (left < j) {
-		quickSort(left, j);
+		bm = quickSort(left, j, bm);
 	}
 	if (i < right) {
-		quickSort(i, right);
+		bm = quickSort(i, right, bm);
 	}
+
+	return bm;
 }
 
-void seqMerge(RG *a, int n, int m) {
+BM seqMerge(RG *a, int n, int m, BM bm) {
 	int i, j, k;
 	RG *x = malloc(n * sizeof(RG));
 	for (i = 0, j = m, k = 0; k < n; k++) {
-
+		bm.nC+=1;
+		bm.nA+=1;
 		if (j == n) {
 			x[k] = a[i++];
+			bm.nC+=1;
+			bm.nA+=1;
 		} else if (i == m) {
 			x[k] = a[j++];
+			bm.nC+=2;
+			bm.nA+=1;
 		} else if (a[j].nr < a[i].nr) {
 			x[k] = a[j++];
+			bm.nC+=3;
+			bm.nA+=1;
 		} else {
 			x[k] = a[i++];
+			bm.nC+=3;
+			bm.nA+=1;
 		}
-
 	}
 	for (i = 0; i < n; i++) {
 		a[i] = x[i];
+		bm.nA+=1;
 	}
 	free(x);
+
+	return bm;
 }
 
-void seqMergeSort(RG *a, int n) {
+BM seqMergeSort(RG *a, int n, BM bm) {
 
+	bm.nC+=1;
 	if (n < 2)
-		return;
+		return bm;
 	int m = n / 2;
-	seqMergeSort(a, m);
-	seqMergeSort(a + m, n - m);
-	seqMerge(a, n, m);
+	bm.nA+=1;
+	bm = seqMergeSort(a, m, bm);
+	bm = seqMergeSort(a + m, n - m, bm);
+	bm = seqMerge(a, n, m, bm);
+
+	return bm;
 }
 
 void callMergeSort() {
 	startBenchmark();
 	BM bm = { 0 };
-	seqMergeSort(seq, size);
+	bm = seqMergeSort(seq, size, bm);
 	endBenchmark(bm);
 }
 
 void callBynarySearch() {
 
-	int rg=0, idx;
+	int rg = 0, idx;
 
-	printf("\n Digite o numero do documento a remover.\n");
+	printf("\n Digite o numero do documento.\n");
 	scanf("%d", &rg);
 
 	startBenchmark();
 	BM bm = { 0 };
 
-	idx = bynarySearch(rg, 0, size);
+	idx = bynarySearch(rg, 0, size, bm);
 
 	if (idx == -1) {
 		printf("\nO valor %d nao pode ser encontrado. \n", rg);
@@ -550,22 +593,53 @@ void callBynarySearch() {
 		printf("NOME: %s\n", seq[idx].nome);
 		printf("NR: %d\n", seq[idx].nr);
 	}
-	endBenchmark(bm);
-
 }
 
-int bynarySearch(int value, int start, int finish) {
+int bynarySearch(int value, int start, int finish, BM bm) {
+	bm.nC+=1;
 	if (start > finish) {
 		return -1;
 	}
 
 	int m = start + (finish - start) / 2;
+	bm.nA+=1;
 
 	if (seq[m].nr < value) {
-		return bynarySearch(value, m + 1, finish);
-	} else if(seq[m].nr > value){
-		return bynarySearch(value, start, m - 1);
+		bm.nC+=1;
+		return bynarySearch(value, m + 1, finish, bm);
+	} else if (seq[m].nr > value) {
+		bm.nC+=1;
+		return bynarySearch(value, start, m - 1, bm);
 	}
 
+	endBenchmark(bm);
 	return m;
 }
+
+void searchByValue() {
+	BM bm = { 0 };
+	startBenchmark();
+
+	int rg, i, flag = 0;
+
+	printf("\n Digite o numero do documento.\n");
+	scanf("%d", &rg);
+
+	for (i = 0; i < size && flag == 0; i++) {
+		if (seq[i].nr == rg) {
+			printf("\nO valor %d pode ser encontrado na posicao %d. \n", rg, i);
+			printf("\nPOS: %d\n", i);
+			printf("NOME: %s\n", seq[i].nome);
+			printf("NR: %d\n", seq[i].nr);
+			flag = 1;
+		}
+		bm.nC += 1;
+	}
+
+	if (flag == 0) {
+		printf("\nO valor %d nao pode ser encontrado. \n", rg);
+	}
+
+	endBenchmark(bm);
+}
+

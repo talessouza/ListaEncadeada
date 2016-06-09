@@ -456,7 +456,7 @@ void deleteNodeByValue(Header *head) {
 }
 
 RG getValue() {
-	RG value = { 0 };
+	RG value;
 
 	fflush(stdin);
 	printf("\n Digite o nome do portador do documento.\n");
@@ -530,6 +530,7 @@ void linkedInserctionSort(Header *head) {
 
 	for (i = 1; i < head->nodeCount; i++) {
 		j = i - 1;
+		bm.nA += 1;
 		while (ref[j + 1]->rg.nr < ref[j]->rg.nr) {
 			temp = ref[j];
 			ref[j] = ref[j + 1];
@@ -539,6 +540,8 @@ void linkedInserctionSort(Header *head) {
 			} else {
 				break;
 			}
+			bm.nC += 2;
+			bm.nA += 3;
 		}
 	}
 	endBenchmark(bm);
@@ -553,14 +556,20 @@ void linkedSelectionSort(Header *head) {
 
 	for (i = 0; i < head->nodeCount - 1; i++) {
 		menorIdx = i;
+		bm.nA += 2;
+		bm.nC += 1;
 		for (j = i + 1; j < head->nodeCount; j++) {
+			bm.nA += 2;
+			bm.nC += 1;
 			if (ref[j]->rg.nr < ref[menorIdx]->rg.nr) {
 				menorIdx = j;
+				bm.nA += 1;
 			}
 		}
 		temp = ref[menorIdx];
 		ref[menorIdx] = ref[i];
 		ref[i] = temp;
+		bm.nA += 3;
 	}
 	endBenchmark(bm);
 }
@@ -573,13 +582,18 @@ void linkedBubbleSort(Header *head) {
 	Node *aux;
 
 	for (i = head->nodeCount - 1; i >= 0; i--) {
+		bm.nA += 1;
+		bm.nC += 1;
 		for (j = 0; j < i; j++) {
+			bm.nA += 1;
+			bm.nC += 1;
 			if (ref[j]->rg.nr > ref[j + 1]->rg.nr) {
-//			if (seq[j] > seq[j  1]) {
 				aux = ref[j];
 				ref[j] = ref[j + 1];
 				ref[j + 1] = aux;
+				bm.nA += 3;
 			}
+			bm.nC += 1;
 		}
 	}
 	endBenchmark(bm);
@@ -594,15 +608,21 @@ void linkedShellSort(Header *head) {
 	Node *tmp;
 
 	for (i = head->nodeCount / 2; i > 0; i = i / 2) {
+		bm.nA += 1;
+		bm.nC += 1;
 		for (j = i; j < head->nodeCount; j++) {
+			bm.nA += 1;
+			bm.nC += 1;
 			for (k = j - i; k >= 0; k = k - i) {
-//				if (seq[k + i] >= seq[k])
+				bm.nA += 1;
+				bm.nC += 2;
 				if (ref[k + i]->rg.nr >= ref[k]->rg.nr)
 					break;
 				else {
 					tmp = ref[k];
 					ref[k] = ref[k + i];
 					ref[k + i] = tmp;
+					bm.nA += 3.;
 				}
 			}
 		}
@@ -614,76 +634,172 @@ void linkedShellSort(Header *head) {
 void linkedCallQuickSort(Header *head) {
 	startBenchmark();
 	BM bm = { 0 };
-	linkedQuickSort(0, head->nodeCount - 1);
+	bm = linkedQuickSort(0, head->nodeCount - 1, bm);
 	endBenchmark(bm);
 }
 
-void linkedQuickSort(int left, int right) {
+BM linkedQuickSort(int left, int right, BM bm) {
 
 	int i = left, j = right;
 	Node *tmp;
 	Node *pivot = ref[(left + right) / 2];
+	bm.nA += 1;
 
-	/* partition */
 	while (i <= j) {
-//            while (seq[i] < pivot)
-		while (ref[i]->rg.nr<pivot->rg.nr)
+		bm.nC += 1;
+		while (ref[i]->rg.nr < pivot->rg.nr) {
 			i++;
-		while (ref[j]->rg.nr > pivot->rg.nr)
+			bm.nC += 1;
+		}
+		while (ref[j]->rg.nr > pivot->rg.nr) {
 			j--;
+			bm.nC += 1;
+		}
 		if (i <= j) {
 			tmp = ref[i];
 			ref[i] = ref[j];
 			ref[j] = tmp;
 			i++;
 			j--;
+			bm.nA += 3;
 		}
+		bm.nC += 1;
 	};
 
-	/* recursion */
 	if (left < j) {
-		linkedQuickSort(left, j);
+		bm = linkedQuickSort(left, j, bm);
 	}
 	if (i < right) {
-		linkedQuickSort(i, right);
+		bm = linkedQuickSort(i, right, bm);
 	}
+
+	return bm;
 }
 
-void linkedMerge(Node **a, int n, int m) {
+BM linkedMerge(Node **a, int n, int m, BM bm) {
 	int i, j, k;
 	Node **x = malloc(n * sizeof(Node*));
 	for (i = 0, j = m, k = 0; k < n; k++) {
-
+		bm.nC += 1;
+		bm.nA += 1;
 		if (j == n) {
 			x[k] = a[i++];
+			bm.nC += 1;
+			bm.nA += 1;
 		} else if (i == m) {
 			x[k] = a[j++];
+			bm.nC += 2;
+			bm.nA += 1;
 		} else if (a[j]->rg.nr < a[i]->rg.nr) {
 			x[k] = a[j++];
+			bm.nC += 3;
+			bm.nA += 1;
 		} else {
 			x[k] = a[i++];
+			bm.nC += 3;
+			bm.nA += 1;
 		}
 
 	}
 	for (i = 0; i < n; i++) {
 		a[i] = x[i];
+		bm.nA += 1;
 	}
 	free(x);
+
+	return bm;
 }
 
-void linkedMergeSort(Node **a, int n) {
+BM linkedMergeSort(Node **a, int n, BM bm) {
 
+	bm.nC += 1;
 	if (n < 2)
-		return;
+		return bm;
 	int m = n / 2;
-	linkedMergeSort(a, m);
-	linkedMergeSort(a + m, n - m);
-	linkedMerge(a, n, m);
+	bm.nA += 1;
+	bm = linkedMergeSort(a, m, bm);
+	bm = linkedMergeSort(a + m, n - m, bm);
+	bm = linkedMerge(a, n, m, bm);
+
+	return bm;
 }
 
 void linkedCallMergeSort(int size) {
 	startBenchmark();
 	BM bm = { 0 };
-	linkedMergeSort(ref,size);
+	bm = linkedMergeSort(ref, size, bm);
+	endBenchmark(bm);
+}
+
+void linkedCallBynarySearch(Header *head) {
+
+	int rg = 0, idx;
+
+	printf("\n Digite o numero do documento.\n");
+	scanf("%d", &rg);
+
+	startBenchmark();
+	BM bm = { 0 };
+
+	idx = linkedBynarySearch(rg, 0, head->nodeCount, bm);
+
+	if (idx == -1) {
+		printf("\nO valor %d nao pode ser encontrado. \n", rg);
+	} else {
+		printf("\nO valor %d pode ser encontrado na posicao %d. \n", rg, idx);
+		printf("\nPOS: %d\n", idx);
+		printf("NOME: %s\n", ref[idx]->rg.nome);
+		printf("NR: %d\n", ref[idx]->rg.nr);
+	}
+}
+
+int linkedBynarySearch(int value, int start, int finish, BM bm) {
+	bm.nC += 1;
+	if (start > finish) {
+		return -1;
+	}
+
+	int m = start + (finish - start) / 2;
+	bm.nA += 1;
+
+	if (ref[m]->rg.nr < value) {
+		bm.nC += 1;
+		return linkedBynarySearch(value, m + 1, finish, bm);
+	} else if (ref[m]->rg.nr > value) {
+		bm.nC += 1;
+		return linkedBynarySearch(value, start, m - 1, bm);
+	}
+
+	endBenchmark(bm);
+	return m;
+}
+
+void searchNodeByValue(Header *head) {
+	BM bm = { 0 };
+
+	startBenchmark();
+
+	int flag = 0, i, rg;
+	Node *aux;
+	aux = head->head;
+	bm.nA += 1;
+
+	printf("\n Digite o numero do documento.\n");
+	scanf("%d", &rg);
+
+	for (i = 0; i < head->nodeCount && flag == 0; i++) {
+		bm.nC += 1;
+		if (aux->rg.nr == rg) {
+			printf("O valor %d foi encontrado no node %d. \n", rg, i);
+			flag = 1;
+		}
+		aux = aux->next;
+		bm.nA += 1;
+	}
+
+	if (flag == 0) {
+		printf("\nNode com valor %d nao pode ser encontrado. \n", rg);
+	}
+
 	endBenchmark(bm);
 }
