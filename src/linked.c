@@ -680,8 +680,6 @@ BM linkedMerge(Node **a, int n, int m, BM bm) {
 	int i, j, k;
 	Node **x = malloc(n * sizeof(Node*));
 	for (i = 0, j = m, k = 0; k < n; k++) {
-		bm.nC += 1;
-		bm.nA += 1;
 		if (j == n) {
 			x[k] = a[i++];
 			bm.nC += 1;
@@ -699,12 +697,12 @@ BM linkedMerge(Node **a, int n, int m, BM bm) {
 			bm.nC += 3;
 			bm.nA += 1;
 		}
-
 	}
 	for (i = 0; i < n; i++) {
 		a[i] = x[i];
 		bm.nA += 1;
 	}
+
 	free(x);
 
 	return bm;
@@ -712,11 +710,9 @@ BM linkedMerge(Node **a, int n, int m, BM bm) {
 
 BM linkedMergeSort(Node **a, int n, BM bm) {
 
-	bm.nC += 1;
 	if (n < 2)
 		return bm;
 	int m = n / 2;
-	bm.nA += 1;
 	bm = linkedMergeSort(a, m, bm);
 	bm = linkedMergeSort(a + m, n - m, bm);
 	bm = linkedMerge(a, n, m, bm);
@@ -735,6 +731,7 @@ void linkedCallBynarySearch(Header *head) {
 
 	int rg = 0, idx;
 
+	fflush(stdin);
 	printf("\n Digite o numero do documento.\n");
 	scanf("%d", &rg);
 
@@ -780,21 +777,18 @@ void searchNodeByValue(Header *head) {
 	startBenchmark();
 
 	int flag = 0, i, rg;
-	Node *aux;
-	aux = head->head;
-	bm.nA += 1;
 
+	fflush(stdin);
 	printf("\n Digite o numero do documento.\n");
 	scanf("%d", &rg);
 
+
 	for (i = 0; i < head->nodeCount && flag == 0; i++) {
 		bm.nC += 1;
-		if (aux->rg.nr == rg) {
+		if (ref[i]->rg.nr == rg) {
 			printf("O valor %d foi encontrado no node %d. \n", rg, i);
 			flag = 1;
 		}
-		aux = aux->next;
-		bm.nA += 1;
 	}
 
 	if (flag == 0) {
